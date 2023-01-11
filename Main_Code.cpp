@@ -6,6 +6,11 @@
 #include <iostream>
 #include <windows.h>
 
+//include project libs:
+#include "Form.hpp"
+#include "Reg_Proc.hpp"
+
+
 using namespace std;
 
 
@@ -13,7 +18,10 @@ using namespace std;
 int main(void)
 {
 
-
+    //Create a object:
+    Form::Inter_Face Menu;
+    Menu.DrawMainMenu();
+    cin.get();
 
     //End of main
     return 0;
