@@ -20,6 +20,7 @@ int main(void)
 
     //Create a object:
     Form::Inter_Face Menu;
+    Reg_Proc::PhoneBook Book;
 
     int SelectWriteMenu = 0;
     int Select = Menu.DrawMainMenu_ProcessInput();
