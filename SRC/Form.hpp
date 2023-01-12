@@ -25,30 +25,7 @@ namespace Form
       int Width = 0;
       int high = 0;
 
-      string PhoneBook_Path = "";
-      string PhoneNumber = "";
-      string Contact_Name = "";
 
-      HANDLE Console = GetStdHandle(STD_OUTPUT_HANDLE);
-      COORD Pos;
-      //Funcs:
-
-      //Set Cursor pos method:
-      void Set_Pos(int x, int y)
-      {
-          Pos.Y = y;
-          Pos.X = x;
-
-          SetConsoleCursorPosition(Console, Pos);
-          return;
-      }
-
-      //Set Color method:
-      void Set_Color(int Color)
-      {
-          SetConsoleTextAttribute(Console, Color);
-          return;
-      }
 
       //Remove Console Scroll Bar method:
       void RD_ScrollBar(void)
@@ -281,6 +258,27 @@ namespace Form
 
       }
 
+
+      HANDLE Console = GetStdHandle(STD_OUTPUT_HANDLE);
+      COORD Pos;
+      //Funcs:
+
+      //Set Cursor pos method:
+      void Set_Pos(int x, int y)
+      {
+          Pos.Y = y;
+          Pos.X = x;
+
+          SetConsoleCursorPosition(Console, Pos);
+          return;
+      }
+
+      //Set Color method:
+      void Set_Color(int Color)
+      {
+          SetConsoleTextAttribute(Console, Color);
+          return;
+      }
   };
 };
 

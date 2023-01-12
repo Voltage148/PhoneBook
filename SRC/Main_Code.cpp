@@ -65,6 +65,7 @@ int main(void)
             break;
     }
 
+    cin.get();
     //End of main
     return 0;
 }
