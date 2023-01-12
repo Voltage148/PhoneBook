@@ -1,8 +1,0 @@
-//
-// Created by Voltage on 1/12/2023.
-//
-
-#ifndef PHONEBOOK_USEDFUNCS_HPP
-#define PHONEBOOK_USEDFUNCS_HPP
-
-#endif //PHONEBOOK_USEDFUNCS_HPP

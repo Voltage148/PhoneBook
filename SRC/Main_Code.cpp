@@ -17,8 +17,7 @@ using namespace std;
 //Start Main:
 int main(void)
 {
-
-    //Create a object:
+    //Create Object:
     Form::Inter_Face Menu;
     Reg_Proc::PhoneBook Book;
 
@@ -34,6 +33,7 @@ int main(void)
             switch(SelectWriteMenu)
             {
                 case 1:
+                    Book.Create_DB();
                     break;
                 case 2:
 
