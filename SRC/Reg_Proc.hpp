@@ -30,11 +30,12 @@ namespace Reg_Proc
       string PhoneBook_Path = "";
       string PhoneNumber = "";
       string Contact_Name = "";
+      int Contact_Number = 0;
 
 
       //Private methods:
 
-      void InputForm(void)
+      void InputForm(int Start_W, int Start_H, string Help_Text, string Title)
       {
           //Clear Screen:
           system("cls");
@@ -45,12 +46,12 @@ namespace Reg_Proc
           //Make A Box:
 
           //SetPos:
-          Set_Pos(20, 15);
+          Set_Pos(Start_W, Start_H);
           Set_Color(24);
 
           //Start Drawing:
           //white bar:
-          Set_Pos(20, 14);
+          Set_Pos(Start_W, Start_H-1);
           Set_Color(31);//white
           for(int Counter_W = 0 ; Counter_W < Width-2 ; Counter_W++)
           {
@@ -69,14 +70,14 @@ namespace Reg_Proc
                       Set_Color(16);
                   }
 
-                  Set_Pos(20+Counter_W, 15+Counter_H);
+                  Set_Pos(Start_W+Counter_W, Start_H+Counter_H);
                   cout << (char)219;
               }
           }
 
           //Print Down shadow:
           Set_Color(16);//Black
-          Set_Pos(22, High+15);
+          Set_Pos(Start_W+2, High+Start_H);
 
           for(int Counter_W = 0 ; Counter_W < Width-2 ; Counter_W++)
           {
@@ -85,7 +86,7 @@ namespace Reg_Proc
 
           //Print Black Line for model:
           Set_Color(128);//Black;
-          Set_Pos(20, 16);
+          Set_Pos(Start_W, Start_H);
 
           for(int Counter_W = 0 ; Counter_W < Width-2 ; Counter_W++)
           {
@@ -93,14 +94,15 @@ namespace Reg_Proc
           }
 
           //Print Title:
-          Set_Pos(Width/2, 14);
+          Set_Pos((Width+Start_W)/2, Start_H-1);
           Set_Color(112);//Black;
 
-          cout << "Create a New PhoneBook";
+          cout << Title;
 
           //Print Help:
-          Set_Pos(21, 17);
-          cout << "Enter File Path or Enter 'Exit' for Exit";
+          Set_Color(128);
+          Set_Pos(Start_W+2, Start_H+1);
+          cout << Help_Text;
           return;
       }
 
@@ -119,7 +121,78 @@ namespace Reg_Proc
       //Write at PhoneBook:
       bool Write_DB(void)
       {
+          //Clear Screen And Set background color:
+          system("cls & color 10");
+          Width = 60;
+          High = 15;
+          InputForm(50, 12, "Enter Name and Phone Number or 'exit' for Exit", "Writing");
 
+          //Print a Line:
+          Set_Pos(50, 15);
+
+          for(int Counter_W = 0 ; Counter_W < Width-2 ; Counter_W++)
+          {
+              cout << (char)196;
+          }
+          Set_Pos(50, 20);
+          for(int Counter_W = 0 ; Counter_W < Width-2 ; Counter_W++)
+          {
+              cout << (char)196;
+          }
+
+
+          //Write Text:
+          //Set Pos:
+          Set_Pos(53, 21);
+          cout << "Number:0";
+
+          Set_Pos(53, 22);
+          cout << "Enter 'Exit' in Contact Name for Exit or";
+          Set_Pos(53, 23);
+          cout << "Press CTRL+C";
+
+
+          //Open File for write:
+          ofstream File(PhoneBook_Path, ios::out);
+          if(File.is_open())
+          {
+              Set_Color(128);//Black
+              while (true) {
+
+                  Set_Pos(53, 16);
+                  cout << "Content Name:";
+                  cin >> Contact_Name;
+
+                  if(Contact_Name == "Exit" or Contact_Name == "exit")
+                  {
+                      File.close();
+                      return true;
+                  }
+                  else
+                  {
+                      //Set Pos:
+
+                      Set_Pos(53, 18);
+                      cout << Contact_Name + " Number:";
+                      cin >> PhoneNumber;
+
+                      File << Contact_Name << " " << PhoneNumber << endl;
+
+                      Set_Pos(53, 16);
+                      Clear_Line(55);
+
+                      Set_Pos(53, 18);
+                      Clear_Line(55);
+
+
+                      Set_Pos(53, 21);
+                      Contact_Number++;
+                      cout << "Number:" << Contact_Number;
+
+                  }
+
+              }
+          }
           return false;
       }
 
@@ -127,7 +200,7 @@ namespace Reg_Proc
       bool Create_DB(void)
       {
           //Call:
-          InputForm();
+          InputForm(20, 15, "Enter File Path or 'Exit' for exit", "Create New Book");
 
           //Print Text:
           Set_Color(128);//Black;
@@ -146,7 +219,7 @@ namespace Reg_Proc
 
           if(PhoneBook_Path == "Exit" or PhoneBook_Path == "exit")
           {
-              return true;
+              return true;          
           }
 
           else {
