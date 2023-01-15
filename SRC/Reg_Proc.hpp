@@ -22,7 +22,7 @@ namespace Reg_Proc
   {
     private:
 
-      //Vals:
+      //Val's:
 
       int Width = 0;
       int High = 0;
