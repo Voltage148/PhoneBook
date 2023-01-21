@@ -70,4 +70,22 @@ void Set_Color(int Color)
     SetConsoleTextAttribute(Console, Color);
     return;
 }
+
+string GetWinUserName(void)
+{
+    string WinUser= "";
+    char nUserName[100];
+    DWORD dUserName = sizeof(nUserName);
+
+    if(GetUserName(nUserName, &dUserName))
+    {
+        WinUser = nUserName;
+        return WinUser;
+    }
+    else
+    {
+        return "NULL";
+    }
+
+}
 #endif //PHONEBOOK_FORMFOUNCTIONS_HPP
