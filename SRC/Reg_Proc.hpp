@@ -200,7 +200,9 @@ namespace Reg_Proc
       bool Create_DB(void)
       {
           //Call:
-          InputForm(20, 15, "Enter File Path or 'Exit' for exit", "Create New Book");
+          InputForm(20, 15,
+           "Enter Path or 'Exit' for exit.'@'= Create book.pb on your Desktop or '&'= Create book.pb in Documents folder.",
+           "Create New Book");
 
           //Print Text:
           Set_Color(128);//Black;
@@ -223,6 +225,16 @@ namespace Reg_Proc
           }
 
           else {
+
+                if(PhoneBook_Path[0] == '@')
+                {
+                    PhoneBook_Path = "C:\\Users\\" + GetWinUserName() + "\\Desktop\\Book.pb";
+                }
+
+                else if(PhoneBook_Path[0] == '&')
+                {
+                    PhoneBook_Path = "C:\\Users\\" + GetWinUserName() + "\\Documents\\Book.pb";
+                }
 
               ofstream File_DB;
               File_DB.open(PhoneBook_Path, ios::out);
@@ -249,6 +261,8 @@ namespace Reg_Proc
                   Set_Pos(22, 20);
                   cout << "Phone Book Created!";
                   Sleep(1500);
+
+
                   Write_DB();
               }
 
