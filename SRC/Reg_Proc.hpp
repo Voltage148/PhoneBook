@@ -11,6 +11,7 @@
 #include <string.h>
 #include <windows.h>
 #include <conio.h>
+#include <vector>
 #include "FormFounctions.hpp"
 using namespace std;
 
@@ -156,43 +157,85 @@ namespace Reg_Proc
           ofstream File(PhoneBook_Path, ios::out);
           if(File.is_open())
           {
-              Set_Color(128);//Black
-              while (true) {
+            vector <string> Names;
 
-                  Set_Pos(53, 16);
-                  cout << "Content Name:";
-                  cin >> Contact_Name;
+            Set_Color(128);//Black
+            while (true) 
+            {
 
-                  if(Contact_Name == "Exit" or Contact_Name == "exit")
-                  {
-                      File.close();
-                      return true;
-                  }
-                  else
-                  {
-                      //Set Pos:
+                Set_Pos(53+13, 16);
 
-                      Set_Pos(53, 18);
-                      cout << Contact_Name + " Number:";
-                      cin >> PhoneNumber;
+                Clear_Line(40);
+                Set_Pos(53, 16);
+                cout << "Content Name:";
+                cin >> Contact_Name;
+                  
 
-                      File << Contact_Name << " " << PhoneNumber << endl;
+                if(Contact_Name == "Exit" or Contact_Name == "exit")
+                {
+                    File.close();
+                    Names.clear();
+                    return true;
+                }
 
-                      Set_Pos(53, 16);
-                      Clear_Line(55);
+                else
+                {
+                    bool is_exist = false;
+                    if(Names.size() > 0)
+                    {
+                        for(int index = 0 ; index < Names.size() ; index++)
+                        {
+                            if(Names.at(index) == Contact_Name)
+                            {
+                                is_exist = true;
+                                break;
+                            }
 
-                      Set_Pos(53, 18);
-                      Clear_Line(55);
+                        }
+                    }
+
+                    else
+                    {
+                        Names.push_back(Contact_Name);
+                        is_exist = false;
+                    }
+
+                    if(is_exist == false)
+                    {
+                        Names.push_back(Contact_Name);
+                            
+                            
+                        Set_Pos(53, 18);
+                        cout << Contact_Name + " Number:";
+                        cin >> PhoneNumber;
+
+                        File << Contact_Name << " " << PhoneNumber << endl;
+
+                        Set_Pos(53, 16);
+                        Clear_Line(55);
+
+                        Set_Pos(53, 18);
+                        Clear_Line(55);
 
 
-                      Set_Pos(53, 21);
-                      Contact_Number++;
-                      cout << "Number:" << Contact_Number;
+                        Set_Pos(53, 21);
+                        cout << "Number:" << Names.size();
 
-                  }
+                    }
 
-              }
-          }
+                    else
+                    {
+                        Set_Pos(53, 25);
+                        cout << Contact_Name << " is already exist!";
+                        Sleep(1500);
+                        Set_Pos(53, 25);
+                        Clear_Line(40);
+                    }
+
+                }
+
+            }
+        }
           return false;
       }
 
