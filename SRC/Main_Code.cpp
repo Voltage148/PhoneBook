@@ -19,7 +19,7 @@ int main(void)
 {
     //Create Object:
     Form::Inter_Face Menu;
-    Reg_Proc::PhoneBook Book;
+    Reg_Proc::PhoneBook_WriteCreate Book;
 
     int SelectWriteMenu = 0;
     int Select = Menu.DrawMainMenu_ProcessInput();
@@ -36,7 +36,7 @@ int main(void)
                     Book.Create_DB();
                     break;
                 case 2:
-
+                    Book.Write_DB(true);
                     break;
                 case 3:
                     //Exit:
@@ -50,7 +50,9 @@ int main(void)
             }
         break;
 
-        case 2:break;
+        case 2:
+
+            break;
 
         case 3:break;
 

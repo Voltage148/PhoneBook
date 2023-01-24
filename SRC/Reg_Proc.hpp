@@ -19,7 +19,7 @@ using namespace std;
 namespace Reg_Proc
 {
   //Class:
-  class PhoneBook
+  class PhoneBook_WriteCreate
   {
     private:
 
@@ -111,7 +111,7 @@ namespace Reg_Proc
     public:
 
       //Make Constructor:
-      PhoneBook()
+      PhoneBook_WriteCreate()
       {
           Width = 120;
           High = 7;
@@ -119,9 +119,67 @@ namespace Reg_Proc
 
       //Methods:
 
-      //Write at PhoneBook:
-      bool Write_DB(void)
+      void GetFilePath(void)
       {
+          //Call:
+          Width = 120;
+          High = 7;
+          InputForm(20, 15,
+                    "Enter Path or 'Exit' for exit.'@'= Create book.pb on your Desktop or '&'= Create book.pb in Documents folder.",
+                    "Create New Book");
+          //Print Text:
+          Set_Color(128);//Black;
+
+          //Make label for back:
+          Back_input:
+
+          //Input Text:
+          Set_Pos(22, 18);
+          cout << "Enter File Path:";
+          //Start Input Process:
+
+          cin >> PhoneBook_Path;
+
+          if(PhoneBook_Path == "@")
+          {
+              PhoneBook_Path = {"C:\\Users\\" + GetWinUserName() + "\\Desktop\\Book.pb"};
+          }
+          else if(PhoneBook_Path == "&")
+          {
+              PhoneBook_Path = {"C:\\Users\\" + GetWinUserName() + "\\Documents\\Book.pb"};
+          }
+          return;
+      }
+
+
+      //Write at PhoneBook:
+      bool Write_DB(bool is_app)
+      {
+          vector <string> Names;
+          ofstream File;
+
+          if(is_app == true)
+          {
+              GetFilePath();
+              ifstream File_Book(PhoneBook_Path, ios::in);
+              string Tmp;
+              while(File_Book >> Tmp)
+              {
+                  if(Tmp[0] != '0')
+                  {
+                      Names.push_back(Tmp);
+                  }
+              }
+              File_Book.close();
+
+              //Open File for write:
+
+              File.open(PhoneBook_Path, ios::out | ios::app);
+
+          }
+
+          else{File.open(PhoneBook_Path, ios::out);}
+
           //Clear Screen And Set background color:
           system("cls & color 10");
           Width = 60;
@@ -153,11 +211,8 @@ namespace Reg_Proc
           cout << "Press CTRL+C";
 
 
-          //Open File for write:
-          ofstream File(PhoneBook_Path, ios::out);
           if(File.is_open())
           {
-            vector <string> Names;
 
             Set_Color(128);//Black
             while (true) 
@@ -242,76 +297,57 @@ namespace Reg_Proc
       //Create New Phonebook:
       bool Create_DB(void)
       {
-          //Call:
-          InputForm(20, 15,
-           "Enter Path or 'Exit' for exit.'@'= Create book.pb on your Desktop or '&'= Create book.pb in Documents folder.",
-           "Create New Book");
-
-          //Print Text:
-          Set_Color(128);//Black;
-
-          //Make label for back:
-          Back_input:
-
-          //Input Text:
-          Set_Pos(22, 18);
-          cout << "Enter File Path:";
-          //Start Input Process:
-
-          cin >> PhoneBook_Path;
+         //Call:
+         Back_input:
+         GetFilePath();
 
           //Make File:
 
-          if(PhoneBook_Path == "Exit" or PhoneBook_Path == "exit")
-          {
-              return true;          
+          ofstream File_DB;
+          File_DB.open(PhoneBook_Path, ios::out);
+
+          if (not File_DB.is_open()) {
+              //Set Color:
+              Set_Color(128);//Black
+              //Set Pos:
+              Set_Pos(22, 20);
+              cout << "Can't Open This Path:" << PhoneBook_Path;
+              Sleep(1500);
+              //Clear Error Line:
+              Set_Pos(22, 20);
+              Clear_Line(90);
+              //Clear Input Line:
+              Set_Pos(22, 18);
+              Clear_Line(90);
+              goto Back_input;
           }
-
-          else {
-
-                if(PhoneBook_Path[0] == '@')
-                {
-                    PhoneBook_Path = "C:\\Users\\" + GetWinUserName() + "\\Desktop\\Book.pb";
-                }
-
-                else if(PhoneBook_Path[0] == '&')
-                {
-                    PhoneBook_Path = "C:\\Users\\" + GetWinUserName() + "\\Documents\\Book.pb";
-                }
-
-              ofstream File_DB;
-              File_DB.open(PhoneBook_Path, ios::out);
-
-              if (not File_DB.is_open()) {
-                  //Set Color:
-                  Set_Color(128);//Black
-                  //Set Pos:
-                  Set_Pos(22, 20);
-                  cout << "Can't Open This Path:" << PhoneBook_Path;
-                  Sleep(1500);
-                  //Clear Error Line:
-                  Set_Pos(22, 20);
-                  Clear_Line(90);
-                  //Clear Input Line:
-                  Set_Pos(22, 18);
-                  Clear_Line(90);
-                  goto Back_input;
-              } else {  //Close File:
-                  File_DB.close();
-                  //Set Color:
-                  Set_Color(128);//Black;
-                  //Set Pos:
-                  Set_Pos(22, 20);
-                  cout << "Phone Book Created!";
-                  Sleep(1500);
+          else
+          {
+              //Close File:
+              File_DB.close();
+              //Set Color:
+              Set_Color(128);//Black;
+              //Set Pos:
+              Set_Pos(22, 20);
+              cout << "Phone Book Created!";
+              Sleep(1500);
 
 
-                  Write_DB();
-              }
+              Write_DB(false);
+
 
           }
         return false;
       }
+  };
+
+  class PhoneBook_ReadSearch
+  {
+      /*
+       * Search at book and read book
+       */
+
+
   };
 
 };
