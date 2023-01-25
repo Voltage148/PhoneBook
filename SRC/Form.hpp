@@ -63,6 +63,7 @@ namespace Form
 
           return;
       }
+
   public:
 
       //Make constructor:
@@ -95,7 +96,6 @@ namespace Form
           Cursor_info.bVisible = false;
           GetConsoleCursorInfo(Cursor_Hide, &Cursor_info);
 
-
           //Make Box:
           Box_Up();
       }
@@ -105,7 +105,6 @@ namespace Form
       //Draw Options and process input:
       int DrawMainMenu_ProcessInput(void)
       {
-
           //Print Texts:
 
           Set_Color(112);//Black;
@@ -204,6 +203,65 @@ namespace Form
 
               case '3':
                     return 3;
+                  break;
+              default:
+                  Set_Pos(45+3, 23);
+                  cout << "Please Enter a valid Char!";
+                  Sleep(1500);
+                  //Clear Line:
+                  Set_Pos(45+3,23);
+                  Clear_Line(26);
+                  //back:
+                  goto Input_Back;
+                  break;
+          }
+
+      }
+
+      int ReadSearchMenu(void)
+      {
+          //Clear Options Text:
+          for(int Counter = 0 ; Counter < 4*2 ; Counter+=2)
+          {
+              Set_Pos(Width - 10, 14+Counter);
+              Clear_Line(30);
+          }
+
+          //Print options:
+
+          Set_Color(128);
+
+          Set_Pos(Width-10, 14);
+          cout << "1->List Book";
+
+          Set_Pos(Width-10, 17);
+          cout << "2->Search at Book";
+
+          Set_Pos(Width-10, 20);
+          cout << "3->Exit";
+
+          //Input Char:
+
+          //Make a label for back:
+          Input_Back:
+          //Select:
+          Set_Pos(45+3, 23);
+          cout << "Enter Char for Continue:";
+          //Var:
+          Set_Pos(72, 23);
+
+          switch(getch())
+          {
+              case '1':
+                  return 1;
+                  break;
+
+              case '2':
+                  return 2;
+                  break;
+
+              case '3':
+                  return 3;
                   break;
               default:
                   Set_Pos(45+3, 23);

@@ -8,105 +8,187 @@
 //Include needed libs:
 #include <iostream>
 #include <fstream>
-#include <string.h>
+#include <string>
 #include <windows.h>
 #include <conio.h>
 #include <vector>
+#include <algorithm>
 #include "FormFounctions.hpp"
 using namespace std;
 
 //Main namespace:
 namespace Reg_Proc
 {
+    int Width = 0;
+    int High = 0;
+
+    string PhoneBook_Path = "";
+    string PhoneNumber = "";
+    string Contact_Name = "";
+    int Contact_Number = 0;
+
+    //Methods:
+
+    void InputForm(int Start_W, int Start_H, string Help_Text, string Title)
+    {
+        //Clear Screen:
+        system("cls");
+
+        //Set Background color:
+        system("color 10");
+
+        //Make A Box:
+
+        //SetPos:
+        Set_Pos(Start_W, Start_H);
+        Set_Color(24);
+
+        //Start Drawing:
+        //white bar:
+        Set_Pos(Start_W, Start_H-1);
+        Set_Color(31);//white
+        for(int Counter_W = 0 ; Counter_W < Width-2 ; Counter_W++)
+        {
+            cout << (char)219;
+        }
+
+        //Input Box:
+        for(int Counter_H = 0 ; Counter_H < High; Counter_H++)
+        {
+            for(int Counter_W = 0 ; Counter_W < Width; Counter_W++)
+            {
+                //SetUp Color:
+                if(Counter_W < Width-2){Set_Color(24);}
+                else
+                {
+                    Set_Color(16);
+                }
+
+                Set_Pos(Start_W+Counter_W, Start_H+Counter_H);
+                cout << (char)219;
+            }
+        }
+
+        //Print Down shadow:
+        Set_Color(16);//Black
+        Set_Pos(Start_W+2, High+Start_H);
+
+        for(int Counter_W = 0 ; Counter_W < Width-2 ; Counter_W++)
+        {
+            cout << (char)219;
+        }
+
+        //Print Black Line for model:
+        Set_Color(128);//Black;
+        Set_Pos(Start_W, Start_H);
+
+        for(int Counter_W = 0 ; Counter_W < Width-2 ; Counter_W++)
+        {
+            cout << (char)196;
+        }
+
+        //Print Title:
+        Set_Pos((Width+Start_W)/2, Start_H-1);
+        Set_Color(112);//Black;
+
+        cout << Title;
+
+        //Print Help:
+        Set_Color(128);
+        Set_Pos(Start_W+2, Start_H+1);
+        cout << Help_Text;
+        return;
+    }
+
+
+    void GetFilePath(void)
+    {
+        //Call:
+        Width = 120;
+        High = 7;
+        InputForm(20, 15,
+                  "Enter Path or 'Exit' for exit.'@'= Create book.pb on your Desktop or '&'= Create book.pb in Documents folder.",
+                  "Create New Book");
+        //Print Text:
+        Set_Color(128);//Black;
+
+        //Make label for back:
+        Back_input:
+
+        //Input Text:
+        Set_Pos(22, 18);
+        cout << "Enter File Path:";
+        //Start Input Process:
+
+        cin >> PhoneBook_Path;
+
+        if(PhoneBook_Path == "@")
+        {
+            PhoneBook_Path = {"C:\\Users\\" + GetWinUserName() + "\\Desktop\\Book.pb"};
+        }
+        else if(PhoneBook_Path == "&")
+        {
+            PhoneBook_Path = {"C:\\Users\\" + GetWinUserName() + "\\Documents\\Book.pb"};
+        }
+        return;
+    }
+
+    string Extract_Name(string Text)
+    {
+        string Name = "";
+
+        for(int Counter = 0 ; Counter < Text.length() ; Counter++)
+        {
+            if(Text[Counter] != '=')
+            {
+                Name = Name + Text[Counter];
+            }
+            else
+            {
+                break;
+            }
+        }
+        return Name;
+    }
+
+    string Extract_PhoneNumber(string Text)
+    {
+        string Phone_Number = "";
+
+        for(int Counter = Text.length() -1 ; Counter >= 0 ; Counter--)
+        {
+            if(Text[Counter] != '=')
+            {
+                Phone_Number += Text[Counter];
+            }
+            else
+            {
+                break;
+            }
+        }
+
+        reverse(Phone_Number.begin(), Phone_Number.end());
+        return Phone_Number;
+    }
+
   //Class:
   class PhoneBook_WriteCreate
   {
-    private:
+  private:
 
-      //Val's:
-
-      int Width = 0;
-      int High = 0;
-
-      string PhoneBook_Path = "";
-      string PhoneNumber = "";
-      string Contact_Name = "";
-      int Contact_Number = 0;
-
-
-      //Private methods:
-
-      void InputForm(int Start_W, int Start_H, string Help_Text, string Title)
+      bool is_exist_equals(string Text)
       {
-          //Clear Screen:
-          system("cls");
+          bool is_exist = false;
 
-          //Set Background color:
-          system("color 10");
-
-          //Make A Box:
-
-          //SetPos:
-          Set_Pos(Start_W, Start_H);
-          Set_Color(24);
-
-          //Start Drawing:
-          //white bar:
-          Set_Pos(Start_W, Start_H-1);
-          Set_Color(31);//white
-          for(int Counter_W = 0 ; Counter_W < Width-2 ; Counter_W++)
+          for(int Counter = 0 ; Counter < Text.length() ; Counter++)
           {
-              cout << (char)219;
-          }
-
-          //Input Box:
-          for(int Counter_H = 0 ; Counter_H < High; Counter_H++)
-          {
-              for(int Counter_W = 0 ; Counter_W < Width; Counter_W++)
-              {
-                  //SetUp Color:
-                  if(Counter_W < Width-2){Set_Color(24);}
-                  else
-                  {
-                      Set_Color(16);
-                  }
-
-                  Set_Pos(Start_W+Counter_W, Start_H+Counter_H);
-                  cout << (char)219;
+              if(Text[Counter] == '=') {
+                  is_exist = true;
+                  break;
               }
           }
-
-          //Print Down shadow:
-          Set_Color(16);//Black
-          Set_Pos(Start_W+2, High+Start_H);
-
-          for(int Counter_W = 0 ; Counter_W < Width-2 ; Counter_W++)
-          {
-              cout << (char)219;
-          }
-
-          //Print Black Line for model:
-          Set_Color(128);//Black;
-          Set_Pos(Start_W, Start_H);
-
-          for(int Counter_W = 0 ; Counter_W < Width-2 ; Counter_W++)
-          {
-              cout << (char)196;
-          }
-
-          //Print Title:
-          Set_Pos((Width+Start_W)/2, Start_H-1);
-          Set_Color(112);//Black;
-
-          cout << Title;
-
-          //Print Help:
-          Set_Color(128);
-          Set_Pos(Start_W+2, Start_H+1);
-          cout << Help_Text;
-          return;
+              return is_exist;
       }
-
 
     public:
 
@@ -118,38 +200,6 @@ namespace Reg_Proc
       }
 
       //Methods:
-
-      void GetFilePath(void)
-      {
-          //Call:
-          Width = 120;
-          High = 7;
-          InputForm(20, 15,
-                    "Enter Path or 'Exit' for exit.'@'= Create book.pb on your Desktop or '&'= Create book.pb in Documents folder.",
-                    "Create New Book");
-          //Print Text:
-          Set_Color(128);//Black;
-
-          //Make label for back:
-          Back_input:
-
-          //Input Text:
-          Set_Pos(22, 18);
-          cout << "Enter File Path:";
-          //Start Input Process:
-
-          cin >> PhoneBook_Path;
-
-          if(PhoneBook_Path == "@")
-          {
-              PhoneBook_Path = {"C:\\Users\\" + GetWinUserName() + "\\Desktop\\Book.pb"};
-          }
-          else if(PhoneBook_Path == "&")
-          {
-              PhoneBook_Path = {"C:\\Users\\" + GetWinUserName() + "\\Documents\\Book.pb"};
-          }
-          return;
-      }
 
 
       //Write at PhoneBook:
@@ -167,7 +217,7 @@ namespace Reg_Proc
               {
                   if(Tmp[0] != '0')
                   {
-                      Names.push_back(Tmp);
+                      Names.push_back(Extract_Name(Tmp));
                   }
               }
               File_Book.close();
@@ -213,7 +263,6 @@ namespace Reg_Proc
 
           if(File.is_open())
           {
-
             Set_Color(128);//Black
             while (true) 
             {
@@ -224,73 +273,74 @@ namespace Reg_Proc
                 Set_Pos(53, 16);
                 cout << "Content Name:";
                 cin >> Contact_Name;
-                  
 
-                if(Contact_Name == "Exit" or Contact_Name == "exit")
+
+                if(is_exist_equals(Contact_Name) == false)
                 {
-                    File.close();
-                    Names.clear();
-                    return true;
+                    if (Contact_Name == "Exit" or Contact_Name == "exit") {
+                        File.close();
+                        Names.clear();
+                        return true;
+                    }
+                    else {
+                        bool is_exist = false;
+                        if (Names.size() > 0) {
+                            for (int index = 0; index < Names.size(); index++) {
+                                if (Names.at(index) == Contact_Name) {
+                                    is_exist = true;
+                                    break;
+                                }
+
+                            }
+                        } else {
+                            Names.push_back(Contact_Name);
+                            is_exist = false;
+                        }
+
+                        if (is_exist == false) {
+                            Names.push_back(Contact_Name);
+
+
+                            Set_Pos(53, 18);
+                            cout << Contact_Name + " Number:";
+                            cin >> PhoneNumber;
+
+                            File << Contact_Name << "=" << PhoneNumber << endl;
+
+                            Set_Pos(53, 16);
+                            Clear_Line(55);
+
+                            Set_Pos(53, 18);
+                            Clear_Line(55);
+
+
+                            Set_Pos(53, 21);
+                            cout << "Number:" << Names.size();
+
+                        }
+                        else {
+                            Set_Pos(53, 25);
+                            cout << Contact_Name << " is already exist!";
+                            Sleep(1500);
+                            Set_Pos(53, 25);
+                            Clear_Line(40);
+                        }
+
+                    }
                 }
 
                 else
                 {
-                    bool is_exist = false;
-                    if(Names.size() > 0)
-                    {
-                        for(int index = 0 ; index < Names.size() ; index++)
-                        {
-                            if(Names.at(index) == Contact_Name)
-                            {
-                                is_exist = true;
-                                break;
-                            }
-
-                        }
-                    }
-
-                    else
-                    {
-                        Names.push_back(Contact_Name);
-                        is_exist = false;
-                    }
-
-                    if(is_exist == false)
-                    {
-                        Names.push_back(Contact_Name);
-                            
-                            
-                        Set_Pos(53, 18);
-                        cout << Contact_Name + " Number:";
-                        cin >> PhoneNumber;
-
-                        File << Contact_Name << " " << PhoneNumber << endl;
-
-                        Set_Pos(53, 16);
-                        Clear_Line(55);
-
-                        Set_Pos(53, 18);
-                        Clear_Line(55);
-
-
-                        Set_Pos(53, 21);
-                        cout << "Number:" << Names.size();
-
-                    }
-
-                    else
-                    {
-                        Set_Pos(53, 25);
-                        cout << Contact_Name << " is already exist!";
-                        Sleep(1500);
-                        Set_Pos(53, 25);
-                        Clear_Line(40);
-                    }
-
+                    Set_Pos(53, 25);
+                    cout << "You can't use '='!";
+                    Sleep(1500);
+                    Set_Pos(53, 25);
+                    Clear_Line(40);
                 }
-
             }
-        }
+
+          }
+
           return false;
       }
 
@@ -347,6 +397,48 @@ namespace Reg_Proc
        * Search at book and read book
        */
 
+
+
+  public:
+
+      bool SearchContact(void)
+      {
+          //Make a Gui for input name:
+
+          system("cls & color 10");
+          Set_Color(24);//Gray
+
+          GetFilePath();
+
+          //Make an Input Box:
+
+          Width = 70;
+          High = 8;
+          InputForm(44, 15, "Enter Your Contact Name or 'exit' -> Exit ", "Search At Book");
+
+          //Start Process:
+
+          ifstream Base_File(PhoneBook_Path, ios::in);
+
+          if(Base_File.is_open())
+          {
+              string Tmp_Line = "";
+              system("cls");
+              while(Base_File >> Tmp_Line)
+              {
+                  cout << Tmp_Line;
+              }
+
+              Base_File.close();
+          }
+          cin.get();
+        return true;
+      }
+
+      bool ListBook(void)
+      {
+        return true;
+      }
 
   };
 
