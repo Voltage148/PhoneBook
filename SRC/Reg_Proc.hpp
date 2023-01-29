@@ -422,21 +422,74 @@ namespace Reg_Proc
 
           if(Base_File.is_open())
           {
+              vector<string> Names;
+              vector<string> Phone_Numbers;
               string Tmp_Line = "";
-              system("cls");
+
+              bool is_found = false;
+              int User_Number = 0;
+
               while(Base_File >> Tmp_Line)
               {
-                  cout << Tmp_Line;
+                  Names.push_back(Extract_Name(Tmp_Line));
+                  Phone_Numbers.push_back(Extract_PhoneNumber(Tmp_Line));
+              }
+
+              while(true)
+              {
+                  Set_Pos(46, 20);
+                  Clear_Line(Width-8);
+
+                  Set_Pos(46, 18);
+                  Clear_Line(Width-8);
+
+                  Set_Pos(46, 18);
+                  cout << "Contact:";
+                  cin >> Contact_Name;
+
+                  if(Contact_Name == "exit" or Contact_Name == "Exit")
+                  {
+                      return false;
+                  }
+
+                  else
+                  {
+                      for(int Index = 0 ; Index < Names.size() ; Index++)
+                      {
+                          if(Names.at(Index) == Contact_Name)
+                          {
+                              is_found = true;
+                              User_Number = Index;
+                              break;
+                          }
+                      }
+
+                      switch(is_found)
+                      {
+                          case true:
+                              Set_Pos(46, 20);
+                              cout << Contact_Name + ": " + Phone_Numbers.at(User_Number);
+                              is_found = false;
+                              getch();
+                              break;
+
+                          case false:
+                              Set_Pos(46, 20);
+                              cout << "Can't found it!";
+                              getch();
+                              break;
+                      }
+                  }
               }
 
               Base_File.close();
           }
-          cin.get();
         return true;
       }
 
       bool ListBook(void)
       {
+
         return true;
       }
 
