@@ -9,10 +9,11 @@
 //include project libs:
 #include "Form.hpp"
 #include "Reg_Proc.hpp"
-
+#include "Form.hpp"
 
 using namespace std;
 
+void ViewLicense(void);
 
 //Start Main:
 int main(void)
@@ -78,7 +79,7 @@ int main(void)
             break;
 
         case 3:
-
+            ViewLicense();
             break;
 
         case 4:
@@ -92,8 +93,16 @@ int main(void)
             break;
     }
 
-    cin.get();
     //End of main
     return 0;
 }
 
+void ViewLicense(void)
+{
+    system("cls & color 10");
+    Reg_Proc::Width = 120;
+    Reg_Proc::High = 4;
+    Reg_Proc::InputForm(15, 15, "Create By Voltage for C++ Practice. it's free on github. It's a simple program like DOS Programs.", "License");
+    cin.get();
+    return;
+}
