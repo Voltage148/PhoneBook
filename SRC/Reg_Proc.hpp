@@ -399,8 +399,6 @@ namespace Reg_Proc
        * Search at book and read book
        */
 
-
-
   public:
 
       bool SearchContact(void)
