@@ -390,7 +390,9 @@ namespace Reg_Proc
         return false;
       }
   };
+    //================================
 
+    //================================
   class PhoneBook_ReadSearch
   {
       /*
@@ -489,8 +491,57 @@ namespace Reg_Proc
 
       bool ListBook(void)
       {
+        system("cls & color 10");
+        Set_Color(24);
 
-        return true;
+        GetFilePath();
+
+        //Make Box:
+        Width = 125;
+        High = 37;
+
+        InputForm(17, 2, "", "List Book");
+
+        ifstream Base_File(PhoneBook_Path, ios::in);
+
+        if(Base_File.is_open())
+        {
+            Set_Color(128);
+            string Tmp = "";
+            int Counter = 0;
+            int W = 0;
+            int H = 0;
+
+            while(Base_File >> Tmp)
+            {
+                if(H > 30)
+                {
+                    W += 40;
+                    H = 0;
+                }
+                Set_Pos(18+W, 3+H);
+                cout << Tmp;
+
+                H += 2;
+            }
+        }
+
+        LBBack:
+
+        Set_Pos(18, High-2);
+        cout << "Enter E for exit:";
+        switch(getch())
+        {
+            case 'E':
+            case 'e':
+                return true;
+                break;
+
+            default:
+                goto LBBack;
+                break;
+        }
+        return false;
       }
 
   };
